@@ -1,0 +1,11 @@
+node_modules/
+dist/
+dist-preview/
+.astro/
+.env
+.env.*
+!.env.example
+.DS_Store
+obsidian.local.json
+src/content/posts/imported/
+src/assets/imported/

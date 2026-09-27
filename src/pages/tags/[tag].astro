@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { posts } from '../../lib/posts';
+import { tagGroups } from '../../lib/tags';
+export async function getStaticPaths() {
+  return tagGroups(await posts()).map(group => ({ params: { tag: group.slug }, props: { group } }));
+}
+const { group } = Astro.props;
+---
+<Base title={`#${group.name}`} description={`${group.name} の記事一覧`} ogImage="/og/pages/tags.png">
+  <section class="tags-page">
+    <a class="back-link" href="/tags/">← All tags</a>
+    <h1>#{group.name}</h1>
+    <p class="tag-count">{group.entries.length} {group.entries.length === 1 ? 'post' : 'posts'}</p>
+    <PostList entries={group.entries} showCategory />
+  </section>
+</Base>

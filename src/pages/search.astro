@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { posts } from '../lib/posts';
+const hasPosts = (await posts()).length > 0;
+---
+<Base title="記事を検索" ogImage="/og/pages/search.png"><header class="page-heading"><h1>記事を検索</h1><p>このサイトに掲載している記事を検索できます。</p></header><div id="search" data-has-posts={hasPosts}></div><p id="search-status" class="empty" role="status">検索を準備しています。</p>
+<script is:inline type="module">
+try {
+  if (document.querySelector('#search').dataset.hasPosts !== 'true') {
+    document.querySelector('#search-status').textContent = '検索できる記事はまだありません。';
+  } else {
+  await import('/pagefind/pagefind-ui.js');
+  const style = document.createElement('link'); style.rel = 'stylesheet'; style.href = '/pagefind/pagefind-ui.css'; document.head.append(style);
+  new window.PagefindUI({ element: '#search', showSubResults: true, showImages: false, translations: { placeholder: 'キーワードを入力', zero_results: '「[SEARCH_TERM]」に一致する記事はありません', clear_search: 'クリア', search_label: '記事を検索' } });
+  document.querySelector('#search-status').hidden = true;
+  }
+} catch { document.querySelector('#search-status').textContent = '検索はビルド後のプレビューで利用できます。記事一覧からもお探しいただけます。'; }
+</script></Base>

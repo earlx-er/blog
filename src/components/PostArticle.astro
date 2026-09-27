@@ -1,0 +1,33 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import { getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { categoryName, categoryPath, dateLabel, postUrl, posts } from '../lib/posts';
+import { relatedPosts } from '../lib/related-posts.mjs';
+import TagChips from './TagChips.astro';
+interface Props { post: CollectionEntry<'posts'>; }
+const { post } = Astro.props;
+const { Content } = await render(post);
+const sectionPath = categoryPath(post.data.category);
+const related: CollectionEntry<'posts'>[] = relatedPosts(post, await posts());
+const isZennSource = post.data.source && new URL(post.data.source).hostname === 'zenn.dev';
+const customOg = post.data.thumbnail
+  ? await getImage({ src: post.data.thumbnail, width: 1200, height: 630, fit: 'cover', format: 'jpeg', quality: 86 })
+  : undefined;
+---
+<Base title={post.data.title} description={post.data.description || undefined} draft={post.data.draft} ogType="article" ogImage={customOg?.src || `/og/${post.data.slug}.png`} ogImageType={customOg ? 'image/jpeg' : 'image/png'} ogImageAlt={post.data.thumbnailAlt || undefined}>
+  <article class="article" data-pagefind-body>
+    <a class="back-link" href={sectionPath} data-pagefind-ignore>← 記事一覧</a>
+    {post.data.draft && <aside class="preview-notice" data-pagefind-ignore>ローカルプレビュー · この下書きは通常の公開用ビルドには含まれません。</aside>}
+    <header class="article-heading"><div class="meta"><a href={sectionPath} data-pagefind-ignore>{categoryName(post.data.category)}</a><span>{dateLabel(post.data.date)}</span><TagChips tags={post.data.tags} /></div><h1 data-pagefind-meta="title">{post.data.title}</h1>{post.data.updated && <p class="meta">改稿：{dateLabel(post.data.updated)}</p>}</header>
+    <div class="prose"><Content /></div>
+    {post.data.source && <p class="source-link" data-pagefind-ignore>{isZennSource ? <>この記事は<a href={post.data.source}>Zennにも掲載しています</a>。</> : <>この記事は<a href={post.data.source}>noteの原稿</a>をもとに改稿しました。</>}</p>}
+    <div class="article-end" data-pagefind-ignore>
+      {related.length > 0 && <section class="related-posts" aria-labelledby="related-posts-heading">
+        <h2 id="related-posts-heading">Related Posts</h2>
+        <ul>{related.map(entry => <li><a href={postUrl(entry)}>{entry.data.title}</a><span>{dateLabel(entry.data.date)}</span></li>)}</ul>
+      </section>}
+      <a href={sectionPath}>記事一覧に戻る →</a>
+    </div>
+  </article>
+</Base>

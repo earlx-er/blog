@@ -1,0 +1,11 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostArchive from '../../components/PostArchive.astro';
+import { posts } from '../../lib/posts';
+import { postsPerPage } from '../../lib/post-archive.mjs';
+const entries = (await posts()).filter(post => post.data.category === 'diary');
+---
+<Base title="Diary" ogImage="/og/pages/diary.png">
+  <h1 class="sr-only">Diary</h1>
+  <PostArchive entries={entries.slice(0, postsPerPage)} currentPage={1} lastPage={Math.max(1, Math.ceil(entries.length / postsPerPage))} />
+</Base>

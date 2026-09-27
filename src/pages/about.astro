@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config';
+const profiles = [
+  { label: 'GitHub', icon: 'github', href: 'https://github.com/earlx-er' },
+  { label: 'X', icon: 'x', href: 'https://x.com/bun_aono' },
+  { label: 'Bluesky', icon: 'bluesky', href: 'https://bsky.app/profile/clayandromeda.bsky.social' },
+  { label: 'note', icon: 'note', href: site.noteUrl },
+  { label: 'Zenn', icon: 'zenn', href: 'https://zenn.dev/clay_andromeda' },
+];
+---
+<Base title="About" ogImage="/og/pages/about.png">
+  <section class="profile" aria-labelledby="profile-name">
+    <h1 id="profile-name">イーアル（earlx）</h1>
+    <nav class="profile-links" aria-label="Social links">
+      {profiles.map(({ label, icon, href }) => <a href={href} aria-label={label} title={label} style={`--profile-icon: url('/icons/${icon}.svg')`} target="_blank" rel="me noopener noreferrer"></a>)}
+    </nav>
+    <p class="profile-role">Game Client Engineer（2020 - now）</p>
+    <p class="profile-location">Japan</p>
+    <div class="profile-bio">
+      <p>Unity中心にゲームのクライアントサイド実装を専門としています。</p>
+      <p>趣味：ラジオ、散歩、読書</p>
+    </div>
+  </section>
+</Base>

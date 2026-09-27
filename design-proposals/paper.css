@@ -1,0 +1,44 @@
+:root, :root[data-theme='light'] {
+  --bg: #f8f6f1;
+  --text: #292822;
+  --muted: #726e64;
+  --line: #d6d1c6;
+  --link: #795d42;
+  --code: #eeeae1;
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  --bg: #211f1b;
+  --text: #eae6dc;
+  --muted: #b1a99c;
+  --line: #4b453c;
+  --link: #d9b999;
+  --code: #302c25;
+  color-scheme: dark;
+}
+body { font-family: Georgia, 'Hiragino Mincho ProN', 'Yu Mincho', serif; }
+.shell { width: min(100% - 56px, 760px); }
+.site-header { padding-block: 27px 20px; }
+.brand, .site-header nav, .header-tools, .site-footer, .post-date, .archive-month-heading, .meta, .back-link, .article-end, .profile-links { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', sans-serif; }
+.brand { font-size: 18px; letter-spacing: -.05em; }
+main { padding-top: 62px; }
+.section-heading { margin-bottom: 22px; }
+.section-heading h1 { font-size: 27px; font-weight: 500; }
+.post-list li { padding: 25px 0 30px; }
+.post-title { font-size: clamp(21px, 3vw, 25px); font-weight: 600; line-height: 1.55; }
+.post-date { margin-top: 7px; font-size: 12px; letter-spacing: .02em; }
+.post-excerpt { margin-top: 12px; font-size: 16px; line-height: 1.8; -webkit-line-clamp: 2; }
+.archive-month-heading { font-size: 13px; font-weight: 600; letter-spacing: .08em; }
+.article { max-width: 710px; }
+.article-heading { margin-top: 38px; margin-bottom: 45px; }
+.article-heading h1 { font-size: clamp(31px, 5vw, 44px); font-weight: 600; line-height: 1.45; }
+.prose { font-size: 18px; line-height: 2.15; }
+.prose p { margin-bottom: 1.7em; }
+.profile { padding-top: 62px; }
+.profile h1 { font-weight: 600; }
+.profile-role, .profile-location, .profile-bio { font-size: 17px; }
+@media (max-width: 640px) {
+  .shell { width: min(100% - 38px, 760px); }
+  main { padding-top: 38px; }
+  .prose { font-size: 17px; }
+}

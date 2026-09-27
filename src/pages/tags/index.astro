@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import { posts } from '../../lib/posts';
+import { tagGroups, tagPath } from '../../lib/tags';
+const groups = tagGroups(await posts());
+---
+<Base title="Tags" description="記事のタグ一覧" ogImage="/og/pages/tags.png">
+  <section class="tags-page">
+    <h1>Tags</h1>
+    {groups.length ? <ul class="tag-index">{groups.map(group => <li><a class="tag-chip" href={tagPath(group.name)}>{group.name}</a><span>{group.entries.length}</span></li>)}</ul> : <p class="empty">タグはまだありません。</p>}
+  </section>
+</Base>

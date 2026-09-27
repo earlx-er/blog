@@ -1,0 +1,19 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PostArchive from '../../../components/PostArchive.astro';
+import { posts } from '../../../lib/posts';
+import { postsPerPage } from '../../../lib/post-archive.mjs';
+import type { GetStaticPaths, Page } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const pages = paginate((await posts()).filter(post => post.data.category === 'tech'), { pageSize: postsPerPage });
+  return pages.filter(({ params }) => params.page !== '1');
+}) satisfies GetStaticPaths;
+interface Props { page: Page<CollectionEntry<'posts'>>; }
+const { page } = Astro.props;
+---
+<Base title={`Tech · ${page.currentPage}`} ogImage="/og/pages/tech.png">
+  <h1 class="sr-only">Tech</h1>
+  <PostArchive entries={page.data} currentPage={page.currentPage} lastPage={page.lastPage} sectionPath="/tech/" />
+</Base>

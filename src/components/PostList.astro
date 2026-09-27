@@ -1,0 +1,25 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { categoryName, postUrl } from '../lib/posts';
+import { postExcerpt } from '../lib/post-excerpt.mjs';
+interface Props { entries: CollectionEntry<'posts'>[]; featured?: boolean; showCategory?: boolean; layout?: 'grid' | 'archive'; }
+const { entries, featured = false, showCategory = false, layout = 'grid' } = Astro.props;
+const publishedDate = (date: string) => date.replaceAll('-', '.');
+---
+<ul class:list={['post-grid', { 'post-grid-featured': featured, 'post-grid-single': entries.length === 1, 'post-grid-archive': layout === 'archive' }]}>
+  {entries.map(post => <li class="post-card">
+    <a href={postUrl(post)}>
+      <span class="post-card-image">
+        {post.data.thumbnail
+          ? <Image src={post.data.thumbnail} alt={post.data.thumbnailAlt} width={1200} height={630} fit="cover" format="webp" loading="lazy" decoding="async" />
+          : <img src={`/og/${post.data.slug}.png`} alt={layout === 'archive' ? '' : post.data.title} width="1200" height="630" loading="lazy" decoding="async" />}
+      </span>
+      <span class="post-card-content">
+        <span class="post-card-meta">{showCategory && <span class="post-card-category">{categoryName(post.data.category)}</span>}<span>{post.data.draft ? '下書き' : publishedDate(post.data.date!)}</span></span>
+        {(layout === 'archive' || post.data.thumbnail) && <span class="post-card-title">{post.data.title}</span>}
+        {layout === 'archive' && <span class="post-card-excerpt">{postExcerpt(post.body, post.data.description)}</span>}
+      </span>
+    </a>
+  </li>)}
+</ul>

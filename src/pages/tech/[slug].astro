@@ -1,0 +1,10 @@
+---
+import PostArticle from '../../components/PostArticle.astro';
+import { posts } from '../../lib/posts';
+export async function getStaticPaths() {
+  return (await posts()).filter(post => post.data.category === 'tech')
+    .map(post => ({ params: { slug: post.data.slug }, props: { post } }));
+}
+const { post } = Astro.props;
+---
+<PostArticle post={post} />

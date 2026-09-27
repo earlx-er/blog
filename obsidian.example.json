@@ -1,0 +1,10 @@
+{
+  "vault": "/absolute/path/to/your/vault",
+  "articles": [
+    {
+      "file": "02_Memo/記事のタイトル.md",
+      "slug": "my-first-essay",
+      "publish": false
+    }
+  ]
+}

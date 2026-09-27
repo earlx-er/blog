@@ -1,0 +1,8 @@
+---
+import { tagPath } from '../lib/tags';
+interface Props { tags: string[]; }
+const { tags } = Astro.props;
+---
+{tags.length > 0 && <ul class="tag-chips" aria-label="Tags">
+  {tags.map(tag => <li><a class="tag-chip" href={tagPath(tag)}>{tag}</a></li>)}
+</ul>}

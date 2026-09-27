@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import PostList from './PostList.astro';
+import { groupPostsByMonth, postsPageUrl } from '../lib/post-archive.mjs';
+interface Props { entries: CollectionEntry<'posts'>[]; currentPage: number; lastPage: number; sectionPath?: string; }
+const { entries, currentPage, lastPage, sectionPath = '/posts/' } = Astro.props;
+const groups = groupPostsByMonth(entries);
+---
+{groups.map(group => <section class="archive-month" aria-labelledby={`month-${group.key}`}>
+  <h2 id={`month-${group.key}`} class="archive-month-heading">{group.label}</h2>
+  <PostList entries={group.entries} layout="archive" />
+</section>)}
+{!entries.length && <p class="empty">記事はまだありません。</p>}
+{lastPage > 1 && <nav class="post-pagination" aria-label="記事一覧のページ移動">
+  <div>{currentPage > 1 && <a href={postsPageUrl(currentPage - 1, sectionPath)}>← 新しい記事</a>}</div>
+  <span>{currentPage} / {lastPage}</span>
+  <div>{currentPage < lastPage && <a href={postsPageUrl(currentPage + 1, sectionPath)}>古い記事 →</a>}</div>
+</nav>}
